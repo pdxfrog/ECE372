@@ -8,7 +8,8 @@
 #ifndef SWITCH_H
 #define	SWITCH_H
 
-void initSW2();
+#define CNAIF IFS1bits.CNAIF
+void initExtSW();
 
 
 #endif	/* SWITCH_H */
