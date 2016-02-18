@@ -83,20 +83,21 @@ void __ISR(_CHANGE_NOTICE_VECTOR, IPL7SRS) _CNInterrupt(void){
    
     if(!T1CONbits.ON){
         T1CONbits.ON = 1;
-        switch(state){
-            case run:
-                state = wait1;
-                break;
-            case stop:
-                state = wait2;
-                break;
-            case wait1:
-                state = stop;
-                break;
-            case wait2:
-                state = run;
-                break;
-        }
+//        switch(state){
+//            case run:
+//                state = wait1;
+//                break;
+//            case stop:
+//                state = wait2;
+//                break;
+//            case wait1:
+//                state = stop;
+//                break;
+//            case wait2:
+//                state = run;
+//                break;
+//        }
+        state = stop;
     }
 }
 
