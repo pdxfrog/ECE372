@@ -37,6 +37,7 @@ volatile int ReqChange=0;
 volatile int AllowChange=0;
 
 
+
 int main() {
     SYSTEMConfigPerformance(10000000);    //Configures low-level system parameters for 10 MHz clock
     enableInterrupts();                   //This function is necessary to use interrupts.
@@ -54,11 +55,11 @@ int main() {
     
     while(1){
         
-        if (AllowChange==1){
+        /*if (AllowChange==1){
             state=NextState;
             AllowChange=0;
             
-        }
+        }*/
         
         
         switch (state) {
@@ -68,9 +69,10 @@ int main() {
                   LATDbits.LATD2=1;
                   LATGbits.LATG12=LedOFF; //TRD1
                   LATGbits.LATG14=LedON; //TRD2
-                  if(ReqChange==1){
-                      NextState=STOP;
+                  if((ReqChange==1) && (AllowChange==1)){
+                      state=WAIT1;
                       ReqChange=0;
+                      AllowChange=0;
                       
                   }
                   
@@ -83,30 +85,33 @@ int main() {
                   LATDbits.LATD2=0;
                   LATGbits.LATG12=LedON;
                   LATGbits.LATG14=LedOFF;
-                  if(ReqChange==1){
-                      NextState=RUN;
+                  if((ReqChange==1) && (AllowChange==1)){
+                      state=WAIT2;
                       ReqChange=0;
+                      AllowChange=0;
                   }
                   
                   break;
         
               case WAIT1:
-                  LATDbits.LATD0=1;
+                  LATDbits.LATD0=0;
                   LATDbits.LATD1=1;
-                  LATDbits.LATD2=0;
-                  if(ReqChange==1){
-                      NextState=STOP;
+                  LATDbits.LATD2=1;
+                  if((ReqChange==1) && (AllowChange==1)){
+                      state=STOP;
                       ReqChange=0;
+                      AllowChange=0;
                   }
                   
                   break;
               case WAIT2:
-                  LATDbits.LATD0=0;
+                  LATDbits.LATD0=1;
                   LATDbits.LATD1=1;
-                  LATDbits.LATD2=1;
-                  if(ReqChange==1){
-                      NextState=RUN;
+                  LATDbits.LATD2=0;
+                  if((ReqChange==1) && (AllowChange==1)){
+                      state=RUN;
                       ReqChange=0;
+                      AllowChange=0;
                   }
                   
                   break;
@@ -132,6 +137,8 @@ void __ISR(_TIMER_1_VECTOR, IPL7SRS) _T1Interrupt(){
     T1CONbits.ON=0;
     TMR1=0;//turn off timer
     AllowChange=1;
+    CNCONAbits.ON=1;
+    
     
     
               
@@ -142,6 +149,8 @@ void __ISR(_CHANGE_NOTICE_VECTOR, IPL7SRS) _CNInterrupt(){
     IFS1bits.CNAIF=0;//put down interrupt flag
     T1CONbits.ON=1;
     ReqChange=1;
+    CNCONAbits.ON=0;
+    
     
    
     
