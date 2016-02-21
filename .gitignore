@@ -1,0 +1,12 @@
+*.o
+*.xml
+nbproject/
+build/
+dist/
+*/build/
+*/nbproject/
+*/dist/
+*.mk
+*.d
+ECE372.7z
+*.stackdump
