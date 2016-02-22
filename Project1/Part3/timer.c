@@ -10,7 +10,7 @@
 
 void initTimer1(){
     TMR1 = 0;               // clear TMR1
-    PR1 = 194;           // Initialize PR1
+    PR1 = 194;           // Initialize PR1 To 5ms
     T1CONbits.TCKPS = 3;    // Set Prescaler to 256
     T1CONbits.TCS = 0;      // Choose Oscillator Zero (PLL)
     IEC0bits.T1IE = 1;      // Interrupt enabled

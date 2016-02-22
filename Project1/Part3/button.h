@@ -9,10 +9,12 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-    #define BUTTON1 PORTDbits.RD6
+    #define R_SWITCH PORTDbits.RD6
+    #define S_SWITCH PORTAbits.RA7
     #define PRESSED 0
     #define RELEASED 1
-    void initSW1();
+
+    void initSwitch();
     
     /* Provide C++ Compatibility */
 #ifdef __cplusplus

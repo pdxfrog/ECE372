@@ -13,10 +13,11 @@
 #define ENABLE 1
 #define DISABLE 0
 
-#define HIGHZ 0
-#define LOWZ 1
+//#define HIGHZ 0
+//#define LOWZ 1
 
 void initLEDs(){
+//internal LEDs
     TRISDbits.TRISD0=OUTPUT;
     LATDbits.LATD0=0;
     TRISDbits.TRISD1=OUTPUT;
