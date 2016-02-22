@@ -34,41 +34,20 @@ int main() {
     SYSTEMConfigPerformance(10000000); //Does something with assembly to set clock speed
     enableInterrupts(); //Make interrupt work
 
-    initLEDs();
-    initTimer1();
+    //initLEDs();
+    //initTimer1();
     initTimer2();
-    initSW1();
+    //initSW1();
     initLCD();
     delay(500);
     //printCharLCD(0);
     testLCD();
     
-    state = led1;
-
+    moveCursorLCD(0,0);
+    
     while (1) {
-        switch (state) {
-            case led1:
-                LED1_ON;
-                //timer1Off();
-                break;
-            case button1:
-                //timer1On();
-                break;
-            case led2:
-                LED2_ON;
-                //timer1Off();
-                break;
-            case button2:
-                //timer1On();
-                break;
-         //   case led3:
-           //     LED3_ON;
-             //   timer1Off();
-               // break;
-         //   case button3:
-           //     timer1On();
-             //   break;
-        }
+        printCharLCD('K');
+                
     }
     return 0;
 }

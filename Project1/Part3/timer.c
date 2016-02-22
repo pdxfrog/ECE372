@@ -10,7 +10,8 @@
 
 void initTimer1(){
     TMR1 = 0;               // clear TMR1
-    PR1 = 389;              // Initialize PR1 To 10ms
+    PR1 = 380;              // Initialize PR1 To 10ms
+    //PR1 = 60000; //This is double what it should be, but seems to work better for some reason.
     T1CONbits.TCKPS = 3;    // Set Prescaler to 256
     T1CONbits.TCS = 0;      // Choose Oscillator Zero (PLL)
     IEC0bits.T1IE = 1;      // Interrupt enabled
@@ -51,7 +52,7 @@ void delay(short int microSeconds){
 
 void initTimer3(){
     TMR3 = 0;               // clear TMR1
-    PR1 = 194;           // Initialize PR1 To 5ms
+    PR3 = 194;           // Initialize PR1 To 5ms
     T3CONbits.TCKPS = 7;    // Set Prescaler to 256
     T3CONbits.TCS = 0;      // Choose Oscillator Zero (PLL)
     IEC0bits.T3IE = 1;      // Interrupt enabled

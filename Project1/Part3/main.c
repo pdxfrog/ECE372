@@ -83,18 +83,26 @@ int main() {
                   LATDbits.LATD1=0;
                   LATDbits.LATD2=1;
 #endif
-                  LATGbits.LATG12=LedOFF; //TRD1
-                  LATGbits.LATG14=LedON; //TRD2
-                  
-                  if(counter==0 || counterCN==1){   // If the counter changed...
+                  LATGbits.LATG14=LedOFF; //TRD1
+                  LATGbits.LATG12=LedON; //TRD2
+                  moveCursorLCD(0,0);
+                  printStringLCD("Running...");
+                  if(counterCN==1){   // If the counter changed...
                       printTimeLCD(counter);
                       counterCN = 0;
                   }
-                  
+                  if(AllowChange == 0){
+                      delay(5000);
+                      delay(5000);
+                      delay(5000);
+                      delay(5000);
+                      AllowChange = 1;
+                  }
                   if((ReqChange==1) && (AllowChange==1)){
                       state=WAIT1;
                       ReqChange=0;
                       AllowChange=0;  
+                    //  CNCONAbits.ON = 1;
                   }
                   break;
                   
@@ -104,18 +112,35 @@ int main() {
                   LATDbits.LATD1=0;
                   LATDbits.LATD2=0;
 #endif
-                  LATGbits.LATG12=LedON;
-                  LATGbits.LATG14=LedOFF;
-                  
-                  if((ReqReset==1) && (AllowReset)){
+                  LATGbits.LATG14=LedON;
+                  LATGbits.LATG12=LedOFF;
+                  moveCursorLCD(0,0);
+                  printStringLCD("Stopped");
+                  if(AllowChange == 0){
+                      delay(5000);
+                      delay(5000);
+                      delay(5000);
+                      delay(5000);
+                      AllowChange = 1;
+                  }
+                  if(AllowReset == 0){
+                      delay(5000);
+                      delay(5000);
+                      delay(5000);
+                      delay(5000);
+                      AllowReset = 1;
+                  }
+                  if((ReqReset==1) && (AllowReset==1)){
                       AllowReset = 0;
                       ReqReset = 0;
                       counter = 0;
+                      printTimeLCD(counter);
                   }
                   if((ReqChange==1) && (AllowChange==1)){
                       state=WAIT2;
                       ReqChange=0;
                       AllowChange=0;
+                     // CNCONAbits.ON = 1;
                   }
                   break;
                   
@@ -126,12 +151,20 @@ int main() {
                   LATDbits.LATD2=1;
 #endif
                   T1CONbits.ON = 0; // Turn off counter
+                  if(AllowChange == 0){
+                      delay(5000);
+                      delay(5000);
+                      delay(5000);
+                      delay(5000);
+                      AllowChange = 1;
+                  }
                   if((ReqChange==1) && (AllowChange==1)){
                       state=STOP;
                       ReqChange=0;
                       AllowChange=0;
                       ReqReset = 0; // So we don't reset as soon as we stop...
                       AllowReset = 0;   // See previous line
+                     // CNCONAbits.ON = 1;
                   }
                   
                   break;
@@ -142,20 +175,29 @@ int main() {
                   LATDbits.LATD2=0;
 #endif
                   T1CONbits.ON = 1; // Turn on counter
+                  if(AllowChange == 0){
+                      delay(5000);
+                      delay(5000);
+                      delay(5000);
+                      delay(5000);
+                      AllowChange = 1;
+                  }
                   if((ReqChange==1) && (AllowChange==1)){   // Button Changed and De-bouncing period is done
                       state=RUN;
                       ReqChange=0;
                       AllowChange=0;
+                      //CNCONAbits.ON = 1;
                   }
                   break;
               
               case InitState:
                    state=STOP;
+                   clearLCD();
                    counter = 0;
+                   printTimeLCD(counter);
                    T1CONbits.ON = 0;
                    TMR1 = 0;
-                   CNCONDbits.ON = 0;
-                   CNCONAbits.ON = 1;
+
                   break;
               default:
                    state=InitState;
@@ -172,6 +214,7 @@ void __ISR(_TIMER_1_VECTOR, IPL7SRS) _T1Interrupt() {
     IFS0bits.T1IF=0; //put down interrupt flag
     counter++;  // increment counter
     counterCN = 1;
+    TMR1 = 0;
 }
 
 // Debounce External
@@ -197,24 +240,19 @@ void __ISR(_TIMER_4_VECTOR, IPL7SRS) _T4Interrupt() {
 // If button is pressed, sets nextstate to a button state
 // Updates state to nextState on button change
 void __ISR(_CHANGE_NOTICE_VECTOR, IPL7SRS) _CNInterrupt() {
-    //IFS1bits.CNDIF=0;
-    
     PORTA;
     PORTD;
     if(IFS1bits.CNAIF){
         T3CONbits.ON=1;
         ReqChange=1;
-        porta = PORTA;
-        CNCONAbits.ON=0;
+        CNCONAbits.ON = 0;
     }
     if(IFS1bits.CNDIF){
         T4CONbits.ON=1;
         ReqReset=1;
-        portd = PORTD;
-        CNCONDbits.ON = 0;
+        CNCONDbits.ON=0;
     }
     IFS1bits.CNAIF=0;//put down interrupt flag
     IFS1bits.CNDIF=0;
-    T3CONbits.ON=1;
             
 }
