@@ -19,5 +19,9 @@ void initTimer2();
 void timer2On();
 void timer2Off();
 
+
+void initTimer3();
+void initTimer4();
+
 #endif	/* TIMER_H */
 

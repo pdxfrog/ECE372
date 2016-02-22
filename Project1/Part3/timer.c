@@ -10,7 +10,7 @@
 
 void initTimer1(){
     TMR1 = 0;               // clear TMR1
-    PR1 = 194;           // Initialize PR1 To 5ms
+    PR1 = 389;              // Initialize PR1 To 10ms
     T1CONbits.TCKPS = 3;    // Set Prescaler to 256
     T1CONbits.TCS = 0;      // Choose Oscillator Zero (PLL)
     IEC0bits.T1IE = 1;      // Interrupt enabled
@@ -45,4 +45,26 @@ void delay(short int microSeconds){
     while(!IFS0bits.T2IF);  // Wait for flag to come up
     T2CONbits.ON = 0;   // Stop Timer
     }
+}
+
+
+
+void initTimer3(){
+    TMR3 = 0;               // clear TMR1
+    PR1 = 194;           // Initialize PR1 To 5ms
+    T3CONbits.TCKPS = 7;    // Set Prescaler to 256
+    T3CONbits.TCS = 0;      // Choose Oscillator Zero (PLL)
+    IEC0bits.T3IE = 1;      // Interrupt enabled
+    IFS0bits.T3IF = 0;      // Lower the flag
+    IPC3bits.T3IP = 7;      // Default Priority
+}
+
+void initTimer4(){
+    TMR4 = 0;               // clear TMR1
+    PR4 = 194;           // Initialize PR1 To 5ms
+    T4CONbits.TCKPS = 7;    // Set Prescaler to 256
+    T4CONbits.TCS = 0;      // Choose Oscillator Zero (PLL)
+    IEC0bits.T4IE = 1;      // Interrupt enabled
+    IFS0bits.T4IF = 0;      // Lower the flag
+    IPC4bits.T4IP = 7;      // Default Priority
 }

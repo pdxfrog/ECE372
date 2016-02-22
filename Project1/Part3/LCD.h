@@ -27,6 +27,8 @@ void clearLCD(void);
 void moveCursorLCD(unsigned char x, unsigned char y);
 void printCharLCD(unsigned char c);
 void printStringLCD(const char* s);
+void printTimeLCD(int time);
+
 void testLCD();
 
 

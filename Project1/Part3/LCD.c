@@ -90,6 +90,19 @@ void printStringLCD(const char* s){
         s++;
     }
 }
+
+void printTimeLCD(int time){
+    char timeString[9] = {"\0"};
+    int mm = time/6000; // integer division for the win
+    int ss = (time%6000)/100;         
+    int nn = time%100;
+    moveCursorLCD(0,1);
+    sprintf(timeString, "%d:%d:%d", mm,ss,nn);
+    printStringLCD(timeString); 
+}
+
+
+
 void testLCD(){
     clearLCD();
     moveCursorLCD(0,0);
