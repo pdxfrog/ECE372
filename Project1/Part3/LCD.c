@@ -97,7 +97,7 @@ void printTimeLCD(int time){
     int ss = (time%6000)/100;         
     int nn = time%100;
     moveCursorLCD(0,1);
-    sprintf(timeString, "%d:%d:%d", mm,ss,nn);
+    sprintf(timeString, "%02d:%02d:%02d", mm,ss,nn);
     printStringLCD(timeString); 
 }
 

@@ -62,6 +62,8 @@ int main() {
     initTimer3();
     initTimer4();
     initSwitch();
+    
+    
     porta = PORTA;
     portd = PORTD;
     
@@ -150,8 +152,10 @@ int main() {
               case InitState:
                    state=STOP;
                    counter = 0;
-                   T1CONbits = 0;
+                   T1CONbits.ON = 0;
                    TMR1 = 0;
+                   CNCONDbits.ON = 0;
+                   CNCONAbits.ON = 1;
                   break;
               default:
                    state=InitState;
@@ -182,11 +186,11 @@ void __ISR(_TIMER_3_VECTOR, IPL7SRS) _T3Interrupt() {
 
 // Debounce Internal
 void __ISR(_TIMER_4_VECTOR, IPL7SRS) _T4Interrupt() {
-    IFS0bits.T1IF=0; //put down interrupt flag
-    T1CONbits.ON=0;
+    IFS0bits.T4IF=0; //put down interrupt flag
+    T4CONbits.ON=0;
     TMR4=0;
     AllowReset=1;
-    CNCONAbits.ON=1;
+    CNCONDbits.ON=1;
 }
 // After 1 millisecond, set the next state to the next LED
 
@@ -194,20 +198,23 @@ void __ISR(_TIMER_4_VECTOR, IPL7SRS) _T4Interrupt() {
 // Updates state to nextState on button change
 void __ISR(_CHANGE_NOTICE_VECTOR, IPL7SRS) _CNInterrupt() {
     //IFS1bits.CNDIF=0;
-    IFS1bits.CNAIF=0;//put down interrupt flag
+    
     PORTA;
     PORTD;
-    if(PORTA != porta){
+    if(IFS1bits.CNAIF){
         T3CONbits.ON=1;
         ReqChange=1;
         porta = PORTA;
+        CNCONAbits.ON=0;
     }
-    if(PORTD != portd){
+    if(IFS1bits.CNDIF){
         T4CONbits.ON=1;
         ReqReset=1;
         portd = PORTD;
+        CNCONDbits.ON = 0;
     }
+    IFS1bits.CNAIF=0;//put down interrupt flag
+    IFS1bits.CNDIF=0;
     T3CONbits.ON=1;
-    CNCONAbits.ON=0;
             
 }
