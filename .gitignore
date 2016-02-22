@@ -10,3 +10,10 @@ dist/
 *.d
 ECE372.7z
 *.stackdump
+*.xml
+*.mk
+*.o
+*.elf
+project0Part3.X/dist/default/production/project0Part3.X.production.hex
+*.map
+Project1/Part3/Makefile
