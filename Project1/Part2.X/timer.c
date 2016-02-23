@@ -7,7 +7,7 @@
  */
 
 #include <xc.h>
-
+// Not used in this part, but kept to make integration with part 3 easier
 void initTimer1(){
     TMR1 = 0;               // clear TMR1
     PR1 = 194;           // Initialize PR1
@@ -17,7 +17,7 @@ void initTimer1(){
     IFS0bits.T1IF = 0;      // Lower the flag
     IPC1bits.T1IP = 7;      // Default Priority
 }
-
+// Unused, but kept for sentimental reasons:
 void timer1On(){
     T1CONbits.ON = 1;       // Start Timer
 }
@@ -25,7 +25,7 @@ void timer1Off(){
     TMR1 = 0;
     T1CONbits.ON = 0;
 }
-
+// Used for microsecond delay
 void initTimer2(){
     TMR2 = 0;               // Clear TMR2
     T2CONbits.TCKPS = 1;// Set Prescaler to 2
@@ -35,7 +35,7 @@ void initTimer2(){
     IPC2bits.T2IP = 7;      // Default Priority
     T2CONbits.ON = 0;
 }
-
+// Delays some number of microseconds
 void delay(short int microSeconds){
     if(microSeconds){
     PR2 = 5 * microSeconds;

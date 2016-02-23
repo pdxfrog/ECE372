@@ -4,6 +4,7 @@
  * Description: lab 0.
  * Created on February, 2016
  */
+// This debugging thing is so useful we left it in the final version. Remove if you don't like it.
 #define _DEBUG_
 /*
  * Notes: Register E is reserved for the LCD
@@ -176,7 +177,7 @@ int main() {
 #endif
                   T1CONbits.ON = 1; // Turn on counter
                   if(AllowChange == 0){
-                      delay(5000);
+                      delay(5000);// The sad part is this didn't even work.
                       delay(5000);
                       delay(5000);
                       delay(5000);
@@ -190,7 +191,7 @@ int main() {
                   }
                   break;
               
-              case InitState:
+              case InitState:// Only happens once
                    state=STOP;
                    clearLCD();
                    counter = 0;
@@ -199,7 +200,7 @@ int main() {
                    TMR1 = 0;
 
                   break;
-              default:
+              default:// Should never happen. How did you get here?
                    state=InitState;
                    ReqChange = 0;
                    AllowChange=0;
@@ -213,27 +214,27 @@ int main() {
 void __ISR(_TIMER_1_VECTOR, IPL7SRS) _T1Interrupt() {
     IFS0bits.T1IF=0; //put down interrupt flag
     counter++;  // increment counter
-    counterCN = 1;
-    TMR1 = 0;
+    counterCN = 1;// counter changed, redraw in FSM
+    TMR1 = 0;// Clear timer (shouldn't be necessary, but it works)
 }
 
 // Debounce External
 void __ISR(_TIMER_3_VECTOR, IPL7SRS) _T3Interrupt() {
     IFS0bits.T3IF=0; //put down interrupt flag
-    T3CONbits.ON=0;
-    TMR3=0;
-    AllowChange=1;
-    CNCONAbits.ON=1;
+    T3CONbits.ON=0;// Turn off timer
+    TMR3=0;// Clear Timer
+    AllowChange=1;//Debouncing complete
+    CNCONAbits.ON=1;// Turn on CN
 }
 
 
 // Debounce Internal
 void __ISR(_TIMER_4_VECTOR, IPL7SRS) _T4Interrupt() {
     IFS0bits.T4IF=0; //put down interrupt flag
-    T4CONbits.ON=0;
-    TMR4=0;
-    AllowReset=1;
-    CNCONDbits.ON=1;
+    T4CONbits.ON=0;// Turn off timer
+    TMR4=0;// Reset timer
+    AllowReset=1;// Safe to reset clock
+    CNCONDbits.ON=1;// Turn CN back on.
 }
 // After 1 millisecond, set the next state to the next LED
 
@@ -242,15 +243,16 @@ void __ISR(_TIMER_4_VECTOR, IPL7SRS) _T4Interrupt() {
 void __ISR(_CHANGE_NOTICE_VECTOR, IPL7SRS) _CNInterrupt() {
     PORTA;
     PORTD;
-    if(IFS1bits.CNAIF){
+    
+    if(IFS1bits.CNAIF){// External Button was pressed or released
         T3CONbits.ON=1;
         ReqChange=1;
-        CNCONAbits.ON = 0;
+        CNCONAbits.ON = 0;  // Without this, no amount of debouncing works with this switch.
     }
-    if(IFS1bits.CNDIF){
+    if(IFS1bits.CNDIF){// internal Button was pressed or released
         T4CONbits.ON=1;
         ReqReset=1;
-        CNCONDbits.ON=0;
+        CNCONDbits.ON=0;    // Not actually necessary, but might be in the future. Doesn't seem to be hurting.
     }
     IFS1bits.CNAIF=0;//put down interrupt flag
     IFS1bits.CNDIF=0;

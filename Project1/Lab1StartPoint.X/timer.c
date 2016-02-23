@@ -8,7 +8,6 @@
 #include <xc.h>
 
 void initTimer1(){
-    
     TMR1=0;
     T1CONbits.ON=0; //enable timer
     T1CONbits.TCKPS=3; //prescaler to 256

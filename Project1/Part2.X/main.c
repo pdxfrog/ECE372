@@ -52,7 +52,7 @@ int main() {
     return 0;
 }
 
-// After 1 Second set next-state to the previous LED
+// Remnant from previous version still here in case the interrupt accidentally gets turned on
 void __ISR(_TIMER_1_VECTOR, IPL7SRS) _T1Interrupt() {
     IFS0bits.T1IF = 0;
     TMR1 = 0;
@@ -102,6 +102,7 @@ void __ISR(_TIMER_1_VECTOR, IPL7SRS) _T1Interrupt() {
 }*/
 // If button is pressed, sets nextstate to a button state
 // Updates state to nextState on button change
+// Does nothing in this particular iteration
 void __ISR(_CHANGE_NOTICE_VECTOR, IPL7SRS) _CNInterrupt() {
     IFS1bits.CNDIF = 0; //Flag down
     PORTD;

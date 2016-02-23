@@ -63,7 +63,7 @@ int main() {
         
         
         switch (state) {
-              case RUN:
+              case RUN: 
                   LATDbits.LATD0=0;
                   LATDbits.LATD1=0;
                   LATDbits.LATD2=1;
@@ -130,8 +130,7 @@ int main() {
     return 0;
 }
 
-//TODO: Add interrupt service routines that manage the change of states
-//for particular events as needed
+//ISR decides when it is actually ok to change again.
 void __ISR(_TIMER_1_VECTOR, IPL7SRS) _T1Interrupt(){
     IFS0bits.T1IF=0; //put down interrupt flag
     T1CONbits.ON=0;
@@ -144,6 +143,7 @@ void __ISR(_TIMER_1_VECTOR, IPL7SRS) _T1Interrupt(){
               
 }
 
+// CN checks whether user requested change
 void __ISR(_CHANGE_NOTICE_VECTOR, IPL7SRS) _CNInterrupt(){
     //IFS1bits.CNDIF=0;
     IFS1bits.CNAIF=0;//put down interrupt flag
