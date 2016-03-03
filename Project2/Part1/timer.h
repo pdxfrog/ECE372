@@ -11,8 +11,7 @@
 
 
 void initTimer1();
-void timerOn();
-void timerOff();
+
 
 //void delayMs(unsigned int delay);
 void initTimer2();

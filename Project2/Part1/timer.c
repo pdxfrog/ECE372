@@ -7,11 +7,12 @@
  */
 
 #include <xc.h>
+#include "timer.h"
+#include "global_defines.h"
 
 void initTimer1(){
     TMR1 = 0;               // clear TMR1
-    PR1 = 380;              // Initialize PR1 To 10ms
-    //PR1 = 60000; //This is double what it should be, but seems to work better for some reason.
+    PR1 = 195;              // Initialize PR1 To 5ms
     T1CONbits.TCKPS = 3;    // Set Prescaler to 256
     T1CONbits.TCS = 0;      // Choose Oscillator Zero (PLL)
     IEC0bits.T1IE = 1;      // Interrupt enabled
@@ -19,13 +20,6 @@ void initTimer1(){
     IPC1bits.T1IP = 7;      // Default Priority
 }
 
-void timer1On(){
-    T1CONbits.ON = 1;       // Start Timer
-}
-void timer1Off(){
-    TMR1 = 0;
-    T1CONbits.ON = 0;
-}
 
 void initTimer2(){
     TMR2 = 0;               // Clear TMR2
@@ -49,7 +43,7 @@ void delay(short int microSeconds){
 }
 
 
-
+/*
 void initTimer3(){
     TMR3 = 0;               // clear TMR1
     PR3 = 194;           // Initialize PR1 To 5ms
@@ -69,3 +63,4 @@ void initTimer4(){
     IFS0bits.T4IF = 0;      // Lower the flag
     IPC4bits.T4IP = 7;      // Default Priority
 }
+ */

@@ -5,6 +5,7 @@
  */
 
 #include <xc.h>
+#include "global_defines.h"
 #include "led.h"
 
 

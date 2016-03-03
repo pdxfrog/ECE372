@@ -11,14 +11,6 @@
 
 #include <xc.h>
 
-#define OUTPUT 0
-#define INPUT 1
-
-#define ENABLE 1
-#define DISABLE 0
-
-#define HIGHZ 0
-#define LOWZ 1
 
 #define LED1 LATDbits.LATD0
 #define LED2 LATDbits.LATD1
