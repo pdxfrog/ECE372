@@ -22,8 +22,5 @@ void timer2Off();
 void initTimer3();
 void initTimer4();
 
-void delaySeconds(int numSeconds);
-void delay(short int microSeconds);
-
 #endif	/* TIMER_H */
 
