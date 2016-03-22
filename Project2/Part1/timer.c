@@ -10,17 +10,14 @@
 #include "timer.h"
 #include "global_defines.h"
 
-extern volatile int count;
-
 void initTimer1(){
     TMR1 = 0;               // clear TMR1
-    PR1 = 39061;              // Initialize PR1 To 1s
+    PR1 = 195;              // Initialize PR1 To 5ms
     T1CONbits.TCKPS = 3;    // Set Prescaler to 256
     T1CONbits.TCS = 0;      // Choose Oscillator Zero (PLL)
     IEC0bits.T1IE = 1;      // Interrupt enabled
     IFS0bits.T1IF = 0;      // Lower the flag
     IPC1bits.T1IP = 7;      // Default Priority
-    T1CONbits.ON = 0;
 }
 
 
@@ -43,14 +40,6 @@ void delay(short int microSeconds){
     while(!IFS0bits.T2IF);  // Wait for flag to come up
     T2CONbits.ON = 0;   // Stop Timer
     }
-}
-
-void delaySeconds(int numSeconds){
-    T1CONbits.ON = YES;
-    count = 0;
-    while(count<numSeconds);// hang
-    count=0;
-    T1CONbits.ON = NO;
 }
 
 

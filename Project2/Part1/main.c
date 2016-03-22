@@ -21,7 +21,6 @@
 #include "interrupt.h"
 #include "config.h"
 #include "LCD.h"
-#include "lock.h"
 
 #define DOWN 0
 #define UP 1
@@ -40,19 +39,14 @@
 
 volatile unsigned char state;
 volatile unsigned char poll;
-volatile int count;
-
 
 int position = 0;
 
-
 int main() {
-    int keepGoing = YES;
-    count=0;
     SYSTEMConfigPerformance(10000000); //Does something with assembly to set clock speed
     enableInterrupts(); //Make interrupt work
     
-    initTimer1(); // For 2s delay
+   // initTimer1(); // For debouncing Keypad
     initTimer2(); // Used for delay()
     initKeypad();
     initLCD();
@@ -60,88 +54,27 @@ int main() {
     delay(500);
     //printCharLCD(0);
     testLCD();
-    initLock();
     
  //   state = InitState;
     TRISDbits.TRISD2 = OUTPUT;
     LATDbits.LATD2 = 0;
     
     moveCursorLCD(0,0);
-  
     while (1) {
-        moveCursorLCD(0,0);
-        printStringLCD("ENTER");
-        while(!poll); // Wait for keypress
         if(poll==1){
-            //printCharLCD(keyScan());
-            switch(readCode(keyScan())){
-                case SET_MODE:
-                    clearLCD();
-                    printStringLCD("SET MODE");
-                    while(keepGoing){// DO this until told to stop
-                        while(!poll);
-                        switch(readCode(keyScan())){
-                            case SET_MODE: // double asterisk
-                                clearLCD();
-                                printStringLCD("INVALID");
-                                delaySeconds(2);
-                                keepGoing = NO; // Don't keep going
-                                break;
-                            case FILLED:
-                                if(setCode()){ // Code was valid
-                                    clearLCD();
-                                    printStringLCD("VALID");
-                                    delaySeconds(2); 
-                                }
-                                else{
-                                    clearLCD();
-                                    printStringLCD("INVALID");
-                                    delaySeconds(2);
-                                }
-                                keepGoing = NO;
-                                break;
-                            case NOT_FILLED:
-                                // DO Nothing
-                                break;
-                        }
-                        
-                        
-                    }
-                    break;
-                case FILLED:
-                    if(compareCode()){ // If code is valid
-                        clearLCD();
-                        printStringLCD("GOOD");
-                        // Hang two Seconds
-                        delaySeconds(2);
-                        clearLCD();
-                    }
-                    else{// code is not valid
-                        clearLCD();
-                        printStringLCD("BAD");
-                        // Hang two Seconds
-                        delaySeconds(2);
-                        clearLCD();
-                    }
-                    break;
-                case NOT_FILLED:
-                    // DO Nothing
-                    break;  
-            }
-            /*position++;
-            if(position == 32){
+            printCharLCD(keyScan());
+            position++;
+            if(position == 31){
                 moveCursorLCD(0,1);
             }
-            if(position == 64){
+            if(position == 63){
                 moveCursorLCD(0,0);
                 position = 0;
-            }*/
+            }
             delay(5000);
             CNCONDbits.ON = 1;
             poll = 0;
         }
-        
-        
         //printCharLCD('C');
     }
     return 0;
@@ -150,7 +83,6 @@ int main() {
 // Stop-Watch
 void __ISR(_TIMER_1_VECTOR, IPL7SRS) _T1Interrupt() {
     IFS0bits.T1IF=0; //put down interrupt flag
-    count++;
 }
 
 

@@ -136,14 +136,6 @@ int main() {
                     // DO Nothing
                     break;  
             }
-            /*position++;
-            if(position == 32){
-                moveCursorLCD(0,1);
-            }
-            if(position == 64){
-                moveCursorLCD(0,0);
-                position = 0;
-            }*/
             delay(500);
             CNCONDbits.ON = 1;
             poll = 0;
