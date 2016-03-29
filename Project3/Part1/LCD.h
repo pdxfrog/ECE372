@@ -31,7 +31,7 @@ void printTimeLCD(int time);
 
 void testLCD();
 
-
+void printVoltageLCD(unsigned int adcValue);
 
 #endif /* _LCD_H */
 

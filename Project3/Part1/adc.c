@@ -6,8 +6,7 @@
 
 /* Initialize ADC */
 void initADC(){
-    
-    ANSELBbits.ANSB0 = 0; // Do not use B0 as Analog input?
+    ANSELBbits.ANSB5 = 1; // Use RB5 as Analog Input
     AD1CON1bits.FORM = 0; // 16 unsigned integer
     AD1CON1bits.SSRC = 7; // Auto-convert mode
     AD1CON1bits.ASAM = 1; // Auto-sampling
@@ -19,9 +18,12 @@ void initADC(){
     AD1CON3bits.SAMC = 2; // 2 Tad per sample (AutoSample Time Bits)
     AD1CON3bits.ADCS = 1; // 4 times the PBCLK (ADC Clock Select)
     AD1CHSbits.CH0NA = 0; // Use Vref- as negative reference
-    AD1CHSbits.CH0SA = 0; // Scan AN0 at least
+    AD1CHSbits.CH0SA = 5; // Scan AN5
+    AD1CON2bits.BUFM = 0; // 16 word buffer
     IFS0bits.AD1IF = 0; // Put down ADC flag
     IPC5bits.AD1IP = 7; // Default Priority for Interrupt
-    IEC0bits.AD1IE = 1; // Enable Interrupt for ADC
+    IEC0bits.AD1IE = 0; // Enable Interrupt for ADC
     AD1CON1bits.ADON = 1; // turn on the ADC
+    
+    
 }

@@ -4,6 +4,11 @@
 
 
 
+void initPWM();
+
+
+
+
 
 #endif /* _PWM_H */
 

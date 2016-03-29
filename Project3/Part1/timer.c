@@ -54,17 +54,18 @@ void delaySeconds(int numSeconds){
 }
 
 
-/*
+
 void initTimer3(){
     TMR3 = 0;               // clear TMR1
-    PR3 = 194;           // Initialize PR1 To 5ms
-    T3CONbits.TCKPS = 7;    // Set Prescaler to 256
+    PR3 = 1023;           // Initialize PR3 To 5ms
+    T3CONbits.TCKPS = 3;    // Set Prescaler to 32
     T3CONbits.TCS = 0;      // Choose Oscillator Zero (PLL)
-    IEC0bits.T3IE = 1;      // Interrupt enabled
+    IEC0bits.T3IE = 0;      // Interrupt disabled
     IFS0bits.T3IF = 0;      // Lower the flag
     IPC3bits.T3IP = 7;      // Default Priority
+    T3CONbits.ON = 1;       // Turn On the TImer
 }
-
+/*
 void initTimer4(){
     TMR4 = 0;               // clear TMR1
     PR4 = 194;           // Initialize PR1 To 5ms
