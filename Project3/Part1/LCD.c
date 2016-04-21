@@ -67,8 +67,8 @@ void initLCD(void){
     writeFourBits(0x06, COMMAND, 10, UPPER);
     writeFourBits(0x06, COMMAND, 50, LOWER);
     
-    writeFourBits(0x0F, COMMAND, 50, UPPER);
-    writeFourBits(0x0F, COMMAND, 50, LOWER);
+    writeFourBits(0x0C, COMMAND, 50, UPPER);
+    writeFourBits(0x0C, COMMAND, 50, LOWER);
 }
 void clearLCD(void){
     // Clear Screen
@@ -121,7 +121,14 @@ void testLCD(){
     printStringLCD(" KYLE    SULTAN ");
 }
 
-
+void printVoltageLCD(unsigned int adcValue){
+    printCharLCD(adcValue/100+48);  // 1 place
+    printCharLCD('.');
+    adcValue = adcValue % 100;      
+    printCharLCD(adcValue / 10 + 48);   // 1/10 place
+    printCharLCD(adcValue%10 + 48);     // 1/100 place
+    
+}
 
 
 

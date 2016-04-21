@@ -9,8 +9,9 @@ void initADC();
 
 
 
+#define ADC_FLAG IFS0bits.AD1IF
 
-
+#define ADC_BUFF ADC1BUF0
 
 
 

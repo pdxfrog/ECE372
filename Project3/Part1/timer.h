@@ -22,6 +22,7 @@ void timer2Off();
 void initTimer3();
 void initTimer4();
 
+void delayQuarterSeconds(int numSeconds);
 void delaySeconds(int numSeconds);
 void delay(short int microSeconds);
 
